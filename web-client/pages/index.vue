@@ -30,7 +30,7 @@
 
             <v-stepper-items>
               <v-stepper-content step="1">
-                <v-file-input ref="file" type="file" accept="video/*" @change="handleFile($event)" />
+                <v-file-input accept="video/*" @change="handleFile($event)" />
               </v-stepper-content>
 
               <v-stepper-content step="2">
@@ -86,18 +86,19 @@ export default {
       resetVideos: 'resetVideos'
     }),
 
-    handleFile (files) {
+    async handleFile (files) {
       'use strict'
-      if (!files) {
+
+      if (files == null) {
         return
       }
 
       const formData = new FormData()
-      // const file = files
-      // console.log(files)
+      console.log(files)
+
       formData.append('video', files)
       // console.log(formData)
-      this.startVideoUpload({ formData })
+      await this.startVideoUpload({ formData })
 
       this.step++
     },

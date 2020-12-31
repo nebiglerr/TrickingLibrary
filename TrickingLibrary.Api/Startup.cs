@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -15,6 +16,7 @@ namespace TrickingLibrary.Api
         private const string AllCors = "All";
         public void ConfigureServices(IServiceCollection services)
         {
+          
             services.AddControllers();
             services.AddSingleton<TrickyStore>();
             services.AddCors(options =>
@@ -27,7 +29,7 @@ namespace TrickingLibrary.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
+           
             app.UseCors(AllCors);
             app.UseRouting();
 
