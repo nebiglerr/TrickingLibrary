@@ -1,4 +1,4 @@
-
+export const strict = false
 const initState = () => ({
   tricks: []
 })
@@ -6,7 +6,7 @@ const initState = () => ({
 export const state = initState
 
 export const mutations = {
-  setTricks (state, { tricks }) {
+  setTricks (state, tricks) {
     state.tricks = tricks
   },
   resetTricks (state) {
@@ -16,14 +16,12 @@ export const mutations = {
 
 export const actions = {
   fetchTricks ({ commit }) {
-    const tricks = this.$axios.$get('http://localhost:5000/api/tricks')
+    this.$axios.$get('/api/tricks').then((tricks) => {
+      commit('setTricks', tricks)
+    })
     // console.log('tricks :', tricks)
-    commit('setTricks', { tricks })
-  },
-  createTricks ({ commit, dispatch }, { tricks }) {
-    this.$axios.$post('http://localhost:5000/api/tricks', tricks)
-    dispatch('fetchTricks')
   }
+
   /* async nuxtServerInit({dispatch}) {
     await dispatch("auth/initialize")
     await dispatch("library/loadContent")
