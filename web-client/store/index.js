@@ -1,4 +1,4 @@
-
+export const strict = false
 const initState = () => ({
 })
 
@@ -12,8 +12,8 @@ export const mutations = {
 }
 
 export const actions = {
-  async nuxtServerInit ({ commit, dispatch }) {
-    await dispatch('tricks/fetchTricks')
+  async nuxtServerInit ({ commit, dispatch }, context) {
+    await dispatch('tricks/fetchTricks', context)
   }
   /* async nuxtServerInit({dispatch}) {
     await dispatch("auth/initialize")
