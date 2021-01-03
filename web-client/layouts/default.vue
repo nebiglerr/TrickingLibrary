@@ -4,14 +4,9 @@
       <v-toolbar-title>Tircking Lirary</v-toolbar-title>
 
       <v-spacer />
-
-      <v-btn depressed @click="toggleActivity">
-        <v-icon small>
-          Upload
-        </v-icon>
-      </v-btn>
+      <video-upload />
     </v-app-bar>
-    <video-upload />
+
     <v-main>
       <nuxt />
     </v-main>
@@ -19,10 +14,8 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
 import VideoUpload from '../components/video-upload'
 export default {
-  methods: mapMutations('video-upload', ['toggleActivity']),
   component: {
     VideoUpload
   }
