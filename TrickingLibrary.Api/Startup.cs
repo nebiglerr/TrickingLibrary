@@ -1,16 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TrickingLibrary.Data;
 
-namespace TrickingLibrary.Api
+namespace TrickingLibrary
 {
     public class Startup
     {
@@ -24,7 +20,7 @@ namespace TrickingLibrary.Api
                 x.MultipartHeadersLengthLimit = int.MaxValue;
             });
             services.AddControllers();
-            services.AddSingleton<TrickyStore>();
+            services.AddDbContext<AppDbContext>(optios => optios.UseInMemoryDatabase("Dev"));
             services.AddCors(options =>
                 options.AddPolicy(AllCors,build => build.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod()));
         }
