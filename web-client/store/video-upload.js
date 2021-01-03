@@ -1,3 +1,4 @@
+import { UPLOAD_TYPE } from '~/data/enum'
 
 export const strict = false
 const initState = () => ({
@@ -20,9 +21,16 @@ export const mutations = {
     state.uploadPromise = uploadPromise
     state.step++
   },
+  incStep (state) {
+    state.step++
+  },
   setType (state, { type }) {
     state.type = type
-    state.step++
+    if (type === UPLOAD_TYPE.TRICK) {
+      state.step++
+    } else if (type === UPLOAD_TYPE.SUBMISSION) {
+      state.step += 2
+    }
   },
   resetVideos (state) {
     Object.assign(state, initState())
@@ -43,9 +51,16 @@ export const actions = {
       commit('setTask', element)
     })
   },
-  async createTricks ({ context, commit, dispatch }, { tricks }) {
-    await this.$axios.post('/api/tricks', tricks)
+  async createTricks ({ state, commit, dispatch }, { tricks, submission }) {
+    if (state.type === UPLOAD_TYPE.TRICK) {
+      const createdTrick = await this.$axios.$post('/api/tricks', tricks)
+      submission.trickId = createdTrick.id
+    }
+
+    await this.$axios.$post('/api/submissions', submission)
+
     await dispatch('tricks/fetchTricks', null, { root: true })
+    await dispatch('submissions/fetchSubmissions', null, { root: true })
   }
   /* async nuxtServerInit({dispatch}) {
     await dispatch("auth/initialize")
