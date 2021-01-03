@@ -14,6 +14,7 @@ export const mutations = {
 export const actions = {
   async nuxtServerInit ({ commit, dispatch }, context) {
     await dispatch('tricks/fetchTricks', context)
+    await dispatch('submissions/fetchSubmissions', context)
   }
   /* async nuxtServerInit({dispatch}) {
     await dispatch("auth/initialize")
