@@ -1,13 +1,11 @@
-﻿using System.Collections;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Net.Http.Headers;
 
-namespace TrickingLibrary.Api.Controllers
+namespace TrickingLibrary.Controllers
 {
     [Route("api/videos")]
     public class VideosController : ControllerBase
