@@ -128,6 +128,7 @@ export default {
       }
       const video = await this.uploadPromise
       console.log(video)
+
       await this.createTricks({
         tricks: { name: this.trickName },
         submission: {
