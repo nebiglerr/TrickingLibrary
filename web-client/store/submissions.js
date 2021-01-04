@@ -1,4 +1,4 @@
-﻿export const strict = false
+export const strict = false
 const initState = () => ({
   submissions: []
 })
@@ -6,7 +6,7 @@ const initState = () => ({
 export const state = initState
 
 export const mutations = {
-  setSubmissions (state, submissions) {
+  setSubmissions (state, { submissions }) {
     state.submissions = submissions
   },
   resetTricks (state) {
@@ -15,11 +15,10 @@ export const mutations = {
 }
 
 export const actions = {
-  fetchSubmissions ({ commit }) {
-    this.$axios.$get('/api/submissions').then((submissions) => {
-      commit('setSubmissions', submissions)
-    })
-    // console.log('tricks :', tricks)
+  async fetchSubmissionsForTricks ({ commit }, trickId) {
+    const submissions = await this.$axios.$get('/api/tricks/' + trickId + '/submissions')
+    commit('setSubmissions', { submissions })
+    console.log('submissions :', submissions)
   }
 
   /* async nuxtServerInit({dispatch}) {
