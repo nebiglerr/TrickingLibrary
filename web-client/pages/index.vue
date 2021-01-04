@@ -4,16 +4,9 @@
       <v-col cols="12" sm="8" md="6">
         <div v-if="tricks">
           <div v-for="t in tricks" :key="t.id">
-            {{ t.id }}-
-            {{ t.name }}
-          </div>
-        </div>
-        <div v-if="submissions">
-          <div v-for="s in submissions" :key="s.id">
-            {{ s.id }}-{{ s.description }}-{{ s.trickId }}
-            <div>
-              <video width="400" controls :src="'http://localhost:5000/api/videos/'+s.video" />
-            </div>
+            <v-btn :to="'tricks/'+t.id">
+              {{ t.name }}
+            </v-btn>
           </div>
         </div>
       </v-col>
@@ -27,8 +20,10 @@ import { mapState } from 'vuex'
 export default {
 
   computed: {
-    ...mapState('tricks', ['tricks']),
-    ...mapState('submissions', ['submissions'])
+    ...mapState('tricks', ['tricks'])
+  },
+  async fetch () {
+    await this.$store.dispatch('tricks/fetchTricks', null, { root: true })
   }
 
 }
