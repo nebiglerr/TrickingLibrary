@@ -7,6 +7,7 @@ export const state = initState
 
 export const mutations = {
   setTricks (state, tricks) {
+    console.log(tricks)
     state.tricks = tricks
   },
   resetTricks (state) {
@@ -15,11 +16,11 @@ export const mutations = {
 }
 
 export const actions = {
-  fetchTricks ({ commit }) {
-    this.$axios.$get('/api/tricks').then((tricks) => {
-      commit('setTricks', tricks)
-    })
-    // console.log('tricks :', tricks)
+  async fetchTricks ({ commit }) {
+    const tricks = await this.$axios.$get('/api/tricks')
+    commit('setTricks', tricks)
+    console.log(tricks)
+    //
   }
 
   /* async nuxtServerInit({dispatch}) {
