@@ -53,14 +53,13 @@ export const actions = {
   },
   async createTricks ({ state, commit, dispatch }, { tricks, submission }) {
     if (state.type === UPLOAD_TYPE.TRICK) {
+      console.log(tricks.name)
       const createdTrick = await this.$axios.$post('/api/tricks', tricks)
+      console.log(createdTrick)
       submission.trickId = createdTrick.id
     }
 
     await this.$axios.$post('/api/submissions', submission)
-
-    await dispatch('tricks/fetchTricks', null, { root: true })
-    await dispatch('submissions/fetchSubmissions', null, { root: true })
   }
   /* async nuxtServerInit({dispatch}) {
     await dispatch("auth/initialize")
