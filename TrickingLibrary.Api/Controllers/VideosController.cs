@@ -18,7 +18,7 @@ namespace TrickingLibrary.Controllers
         }
 
         [HttpGet("{video}")]
-        public async Task<IActionResult> GetVideo(string video)
+        public IActionResult GetVideo(string video)
         {
             var savePath = Path.Combine(_env.WebRootPath, video);
           

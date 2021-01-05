@@ -29,20 +29,26 @@
 import { mapMutations, mapState } from 'vuex'
 import TrickStep from './trick-step'
 import SubmissionsSteps from './submission-step'
+import CategoryForm from './category-form'
+import DifficultyForm from './difficulty-form'
 
 export default {
   name: 'ContentCreationDialog',
 
   component: {
     TrickStep,
-    SubmissionsSteps
+    SubmissionsSteps,
+    CategoryForm,
+    DifficultyForm
   },
   computed: {
     ...mapState('video-upload', ['active', 'component']),
     menuItems () {
       return [
         { component: TrickStep, title: ' Trick' },
-        { component: SubmissionsSteps, title: 'Submission ' }
+        { component: SubmissionsSteps, title: 'Submission ' },
+        { component: CategoryForm, title: 'Category ' },
+        { component: DifficultyForm, title: 'Difficulty ' }
       ]
     }
   },
