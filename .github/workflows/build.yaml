@@ -12,7 +12,8 @@ jobs:
       - name: Print Current Directory
         run: pwd
       - name: List Filed in Directory
-        run: ls
+        run: ls"
+        
       - name: Check Dotnet Cli
         run: dotnet build 
       - name: List Filed in Directory
