@@ -1,36 +1,23 @@
-import { UPLOAD_TYPE } from '~/data/enum'
-
 export const strict = false
 const initState = () => ({
   uploadPromise: null,
   active: false,
-  type: '',
-  step: 1
+  component: null
 })
 
 export const state = initState
 
 export const mutations = {
-  toggleActivity (state) {
-    state.active = !state.active
-    if (!state.active) {
-      Object.assign(state, initState())
-    }
+  activate (state, { component }) {
+    state.active = true
+    state.component = component
+  },
+  hide (state) {
+    state.active = false
   },
   setTask (state, uploadPromise) {
     state.uploadPromise = uploadPromise
     state.step++
-  },
-  incStep (state) {
-    state.step++
-  },
-  setType (state, { type }) {
-    state.type = type
-    if (type === UPLOAD_TYPE.TRICK) {
-      state.step++
-    } else if (type === UPLOAD_TYPE.SUBMISSION) {
-      state.step += 2
-    }
   },
   resetVideos (state) {
     Object.assign(state, initState())
@@ -51,16 +38,17 @@ export const actions = {
       commit('setTask', element)
     })
   },
-  async createTricks ({ state, commit, dispatch }, { tricks, submission }) {
-    if (state.type === UPLOAD_TYPE.TRICK) {
-      console.log(tricks.name)
-      const createdTrick = await this.$axios.$post('/api/tricks', tricks)
-      console.log(createdTrick)
-      submission.trickId = createdTrick.id
+  async createSubmission ({ state, commit, dispatch }, { form }) {
+    if (!state.uploadPromise) {
+      return
     }
 
-    await this.$axios.$post('/api/submissions', submission)
+    form.video = await state.uploadPromise
+
+    await dispatch('submissions/createSubmission', { form }, { root: true })
+  //  commit('resetVideos')
   }
+
   /* async nuxtServerInit({dispatch}) {
     await dispatch("auth/initialize")
     await dispatch("library/loadContent")

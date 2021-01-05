@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex justify-center align-start">
     <div v-if="submissions" class="mx-2">
-      <div v-for="x in 20" :key="x.id">
+      <div v-for="x in 1" :key="x.id">
         <div v-for="s in submissions" :key="s.id">
           {{ s.id }}-{{ s.description }}-{{ s.trickId }}
           <div>
@@ -22,7 +22,8 @@ export default {
   computed: mapState('submissions', ['submissions']),
   async fetch () {
     const trickId = this.$route.params.trick
-    await this.$store.dispatch('submissions/fetchSubmissionsForTricks', trickId, { root: true })
+
+    await this.$store.dispatch('submissions/fetchSubmissionsForTricks', { trickId }, { root: true })
   }
 }
 </script>

@@ -4,7 +4,12 @@ const initState = () => ({
 })
 
 export const state = initState
-
+export const getters = {
+  tricksItem: state => state.tricks.map(x => ({
+    text: x.name,
+    value: x.id
+  }))
+}
 export const mutations = {
   setTricks (state, tricks) {
     console.log(tricks)
@@ -21,10 +26,10 @@ export const actions = {
     commit('setTricks', tricks)
     console.log(tricks)
     //
+  },
+
+  createTricks ({ state, commit, dispatch }, { form }) {
+    return this.$axios.$post('/api/tricks', form)
   }
 
-  /* async nuxtServerInit({dispatch}) {
-    await dispatch("auth/initialize")
-    await dispatch("library/loadContent")
-  } */
 }

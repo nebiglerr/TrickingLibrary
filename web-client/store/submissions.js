@@ -15,10 +15,15 @@ export const mutations = {
 }
 
 export const actions = {
-  async fetchSubmissionsForTricks ({ commit }, trickId) {
+  async fetchSubmissionsForTricks ({ commit }, { trickId }) {
     const submissions = await this.$axios.$get('/api/tricks/' + trickId + '/submissions')
     commit('setSubmissions', { submissions })
     console.log('submissions :', submissions)
+    console.log('trickId :', trickId)
+  },
+  createSubmission ({ state, commit, dispatch }, { form }) {
+    console.log(form)
+    return this.$axios.$post('/api/submissions', form)
   }
 
   /* async nuxtServerInit({dispatch}) {
