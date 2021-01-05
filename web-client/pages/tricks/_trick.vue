@@ -19,12 +19,13 @@
 <script>
 import { mapState } from 'vuex'
 export default {
-  computed: mapState('submissions', ['submissions']),
   async fetch () {
     const trickId = this.$route.params.trick
 
     await this.$store.dispatch('submissions/fetchSubmissionsForTricks', { trickId }, { root: true })
-  }
+  },
+  computed: mapState('submissions', ['submissions'])
+
 }
 </script>
 

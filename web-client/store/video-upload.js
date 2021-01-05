@@ -26,7 +26,7 @@ export const mutations = {
 
 export const actions = {
 
-  startVideoUpload ({ commit, dispatch }, { formData }) {
+  startVideoUpload ({ commit, dispatch }, formData) {
     this.$axios.$post('/api/videos', formData, {
       headers: {
         Accept: 'text/html',
