@@ -4,7 +4,7 @@
       <v-toolbar-title>Tircking Lirary</v-toolbar-title>
 
       <v-spacer />
-      <video-upload />
+      <content-creation-dialog />
     </v-app-bar>
 
     <v-main>
@@ -14,10 +14,10 @@
 </template>
 
 <script>
-import VideoUpload from '../components/video-upload'
+import ContentCreationDialog from '../components/content-creation/content-creation-dialog'
 export default {
   component: {
-    VideoUpload
+    ContentCreationDialog
   }
 }
 </script>
