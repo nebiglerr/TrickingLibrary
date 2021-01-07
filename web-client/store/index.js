@@ -12,8 +12,8 @@ export const mutations = {
 }
 
 export const actions = {
-  async nuxtServerInit ({ dispatch }) {
-    await dispatch('tricks/fetchTricks')
+  nuxtServerInit ({ dispatch }) {
+    return dispatch('tricks/fetchTricks')
   }
   /* async nuxtServerInit({dispatch}) {
     await dispatch("auth/initialize")

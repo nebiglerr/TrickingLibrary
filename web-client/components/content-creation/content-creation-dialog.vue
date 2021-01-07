@@ -38,8 +38,9 @@ export default {
   component: {
     TrickStep,
     SubmissionsSteps,
-    CategoryForm,
-    DifficultyForm
+    DifficultyForm,
+    CategoryForm
+
   },
   computed: {
     ...mapState('video-upload', ['active', 'component']),
@@ -47,8 +48,9 @@ export default {
       return [
         { component: TrickStep, title: ' Trick' },
         { component: SubmissionsSteps, title: 'Submission ' },
-        { component: CategoryForm, title: 'Category ' },
-        { component: DifficultyForm, title: 'Difficulty ' }
+        { component: DifficultyForm, title: 'Difficulty ' },
+        { component: CategoryForm, title: 'Category ' }
+
       ]
     }
   },

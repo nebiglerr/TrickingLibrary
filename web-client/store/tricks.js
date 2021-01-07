@@ -7,6 +7,7 @@ const initState = () => ({
 
 export const state = initState
 export const getters = {
+  trickById: state => id => state.tricks.find(x => x.id === id),
   tricksItem: state => state.tricks.map(x => ({
     text: x.name,
     value: x.id

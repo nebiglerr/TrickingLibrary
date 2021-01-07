@@ -32,7 +32,8 @@ namespace TrickingLibrary.Controllers
         [HttpGet("{id}/tricks")]
         public IEnumerable<Trick> ListCategoryTricks(string id) => _ctx.TrickCategories
             .Include(x => x.Trick)
-            .Where(x => x.CategoryId.Equals(id, StringComparison.InvariantCultureIgnoreCase)).Select(x => x.Trick)
+            .Where(x => x.CategoryId.Equals(id, StringComparison.InvariantCultureIgnoreCase))
+            .Select(x => x.Trick)
             .ToList();
 
         [HttpPost]

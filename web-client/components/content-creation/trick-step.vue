@@ -56,7 +56,7 @@ const initState = () => ({
   form: {
     name: '',
     description: '',
-    difficulty: [],
+    difficulty: '',
     prerequisites: [],
     progressions: [],
     categories: []
@@ -68,16 +68,16 @@ export default {
 
   data: initState,
 
+  computed: {
+    ...mapState('video-upload', ['active']),
+    ...mapGetters('tricks', ['categoriesItem', 'difficultiesItem', 'tricksItem'])
+  },
   watch: {
     active (newValue) {
       if (!newValue) {
         Object.assign(this.$data, initState())
       }
     }
-  },
-  computed: {
-    ...mapState('video-upload', ['active']),
-    ...mapGetters('tricks', ['categoriesItem', 'difficultiesItem', 'tricksItem'])
   },
   methods: {
     ...mapMutations('video-upload', ['resetVideos']),

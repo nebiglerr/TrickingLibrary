@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,29 +24,70 @@ namespace TrickingLibrary
                         Name = "Easy",
                         Description = "easy test"
                     });
-                    ctx.Difficulties.Add(new Difficulty
+                    ctx.Add(new Difficulty
+                    {
+                        Id = "medium",
+                        Name = "Medium",
+                        Description = "medium hard"
+                    });ctx.Difficulties.Add(new Difficulty
                     {
                         Id = "hard",
-                        Name = "hard",
+                        Name = "Hard",
                         Description = "hard hard"
                     });
                     ctx.Categories.Add(new Category
                     {
                         Id = "kick",
-                        Name = "kick",
+                        Name = "Kick",
                         Description = "kick kick"
                     });
                     ctx.Categories.Add(new Category
                     {
                         Id = "flip",
-                        Name = "flip",
+                        Name = "Flip",
                         Description = "flip flip"
                     });
                     ctx.Categories.Add(new Category
                     {
                         Id = "translation",
-                        Name = "translation",
+                        Name = "Translation",
                         Description = "translation"
+                    });
+                    ctx.Add(new Trick
+                    {
+                        Id = "backwards-roll",
+                        Name = "Backwards Roll",
+                        Difficulty = "easy",
+                        Description = "This is a test backwards roll ",
+                        TrickCategories = new List<TrickCategory>
+                        {
+                            new TrickCategory
+                            {
+                                CategoryId = "flip",
+                                
+                            }
+                        }
+                    });
+                    ctx.Add(new Trick
+                    {
+                        Id = "back-flip",
+                        Name = "Back Flip",
+                        Description = "This is a test back flip ",
+                        Difficulty = "medium",
+                        TrickCategories = new List<TrickCategory>
+                        {
+                            new TrickCategory
+                            {
+                                CategoryId = "flip"
+                            }
+                        },
+                        Prerequisites = new List<TrickRelationship>
+                        {
+                            new TrickRelationship
+                            {
+                                PrerequisiteId = "backwards-roll"
+                            }
+                        }
                     });
                     ctx.SaveChanges();
                 }
