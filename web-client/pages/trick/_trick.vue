@@ -10,8 +10,8 @@
         </div>
       </div>
     </div>
-    <div class="mx-2 sticky">
-      <v-sheet class="pa-3 mt-2">
+    <div class="mx-2 ">
+      <v-sheet class="pa-3 ma-2 sticky">
         <div class="text-h6">
           {{ trick.name }}
         </div>
@@ -60,19 +60,19 @@ export default {
           title: 'Categories',
           data: this.categories.filter(x => this.categories),
           idFactory: c => `category-${c.id}`,
-          routeFactory: c => '/'
+          routeFactory: c => `/category/${c.id}`
         },
         {
           title: 'Prerequisites',
           data: this.tricks.filter(x => this.trick.prerequisites),
           idFactory: t => `trick-${t.id}`,
-          routeFactory: t => `/tricks/${t.id}`
+          routeFactory: t => `/trick/${t.id}`
         },
         {
           title: 'Progressions',
           data: this.tricks.filter(x => this.trick.progressions),
           idFactory: t => `trick-${t.id}`,
-          routeFactory: t => `/tricks/${t.id}`
+          routeFactory: t => `/trick/${t.id}`
         }
       ]
     }
@@ -90,9 +90,5 @@ export default {
 </script>
 
 <style scoped>
-.sticky {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 62px;
-}
+
 </style>

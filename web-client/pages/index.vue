@@ -4,7 +4,7 @@
       <v-col cols="12" sm="8" md="6">
         <div v-if="tricks">
           <div v-for="t in tricks" :key="t.id">
-            <v-btn :to="'tricks/'+t.id">
+            <v-btn :to="'trick/'+t.id">
               {{ t.name }}
             </v-btn>
           </div>
