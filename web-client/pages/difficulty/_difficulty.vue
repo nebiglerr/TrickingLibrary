@@ -1,14 +1,15 @@
 <template>
   <div class="d-flex mt-3   justify-center align-start">
     <trick-list :tricks="tricks" class="mx-2" />
+
     <div class="mx-2 ">
-      <v-sheet v-if="category" class="pa-3 ma-2 sticky">
+      <v-sheet v-if="difficulty" class="pa-3 ma-2 sticky">
         <div class="text-h6">
-          {{ category.name }}
+          {{ difficulty.name }}
         </div>
         <v-divider class="my-1" />
         <div class="text-body-2">
-          {{ category.description }}
+          {{ difficulty.description }}
         </div>
       </v-sheet>
     </div>
@@ -17,36 +18,35 @@
 <script>
 import { mapGetters } from 'vuex'
 import TrickList from '~/components/trick-list'
-
 export default {
-  name: 'Category',
+  name: 'Difficulty',
   component: {
     TrickList
   },
   data: () => ({
-    category: null,
-    tricks: [],
-    filter: ''
+    difficulty: null,
+    tricks: []
+
   }),
 
   computed: {
-    ...mapGetters('tricks', ['categoryById'])
+    ...mapGetters('tricks', ['difficultyById'])
 
   },
   async fetch () {
-    const categoryId = this.$route.params.category
-    this.category = await this.categoryById(categoryId)
-    this.tricks = await this.$axios.$get('/api/categories/' + categoryId + '/tricks')
+    const difficultyId = this.$route.params.difficulty
+    this.difficulty = await this.difficultyById(difficultyId)
+    this.tricks = await this.$axios.$get('/api/difficulties/' + difficultyId + '/tricks')
     console.log(this.tricks)
   },
   head () {
-    if (!this.category) {
+    if (!this.difficulty) {
       return {}
     }
     return {
-      title: this.category.name,
+      title: this.difficulty.name,
       meta: [
-        { hid: 'description', name: 'description', content: this.category.description }
+        { hid: 'description', name: 'description', content: this.difficulty.description }
       ]
     }
   }
