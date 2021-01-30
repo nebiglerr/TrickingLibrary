@@ -29,7 +29,8 @@ namespace TrickingLibrary
                         Id = "medium",
                         Name = "Medium",
                         Description = "medium hard"
-                    });ctx.Difficulties.Add(new Difficulty
+                    });
+                    ctx.Difficulties.Add(new Difficulty
                     {
                         Id = "hard",
                         Name = "Hard",
@@ -64,7 +65,6 @@ namespace TrickingLibrary
                             new TrickCategory
                             {
                                 CategoryId = "flip",
-                                
                             }
                         }
                     });
@@ -88,6 +88,18 @@ namespace TrickingLibrary
                                 PrerequisiteId = "backwards-roll"
                             }
                         }
+                    });
+                    ctx.Add(new Submission
+                    {
+                        TrickId = "back-flip",
+                        Description = "Test description ı have tired to go max height",
+                        Video = "fwjtbbe5.yet.mp4"
+                    });   
+                    ctx.Add(new Submission
+                    {
+                        TrickId = "back-flip",
+                        Description = "Test description ı have tired to go max height",
+                        Video = "video4.mp4"
                     });
                     ctx.SaveChanges();
                 }

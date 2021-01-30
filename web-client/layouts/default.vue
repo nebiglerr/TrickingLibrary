@@ -1,7 +1,9 @@
 <template>
   <v-app dark>
     <v-app-bar app dark>
-      <v-toolbar-title>Tircking Lirary</v-toolbar-title>
+      <nuxt-link class="text-h5  text--primary" style="text-decoration: none" to="/">
+        Tircking Lirary
+      </nuxt-link>
 
       <v-spacer />
       <content-creation-dialog />
