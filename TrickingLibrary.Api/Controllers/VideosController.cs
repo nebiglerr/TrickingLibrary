@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,20 @@ namespace TrickingLibrary.Controllers
                 {
                     await video.CopyToAsync(fileStream);
                 }
+               await Task.Run(() => {	
+                    var startInfo = new ProcessStartInfo{
+                        FileName = Path.Combine(_env.ContentRootPath, "ffmpeg","ffmpeg.exe"),
+                        Arguments = $"-y -i {savePath} -an -vf scale=640x480 test2.mp4",
+                        WorkingDirectory = _env.WebRootPath,
+                        CreateNoWindow = true,
+                        UseShellExecute = false
+                    };
+                    using (var process = new Process {StartInfo = startInfo}){
+                        process.Start();
+                        process.WaitForExit();
+                    }
+                });
+               
                 return Ok(fileName);
           
 
