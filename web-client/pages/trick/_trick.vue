@@ -1,15 +1,16 @@
 <template>
-  <div class="d-flex mt-3 justify-center align-start">
-    <div v-if="submissions" class="mx-3">
-      <div v-for="x in 10" :key="x.id">
-        <v-card v-for="s in submissions" :key="s.id" class="mb-3">
-          <video-player :video="s.video" />
-          <v-card-text>{{ s.description }}</v-card-text>
-        </v-card>
+  <item-content-layout>
+    <template v-slot:content>
+      <div v-if="submissions">
+        <div v-for="x in 10" :key="x.id">
+          <v-card v-for="s in submissions" :key="s.id" class="mb-3">
+            <video-player :video="s.video" />
+            <v-card-text>{{ s.description }}</v-card-text>
+          </v-card>
+        </div>
       </div>
-    </div>
-
-    <v-sheet class="pa-3 sticky">
+    </template>
+    <template v-slot:item>
       <div class="text-h5">
         <span>   {{ trick.name }}</span>
         <v-chip class="mb-1 ml-2" small :to="/difficulty/+difficulty.id">
@@ -32,14 +33,17 @@
           </v-chip>
         </v-chip-group>
       </div>
-    </v-sheet>
-  </div>
+    </template>
+  </item-content-layout>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex'
+import VideoPlayer from '~/components/video-player'
+import ItemContentLayout from '~/components/item-content-layout'
 
 export default {
+  component: { ItemContentLayout, VideoPlayer },
   async fetch () {
     const trickId = this.$route.params.trick
     this.trick = await this.trickById(this.$route.params.trick)
