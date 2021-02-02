@@ -93,13 +93,15 @@ namespace TrickingLibrary
                     {
                         TrickId = "back-flip",
                         Description = "Test description ı have tired to go max height",
-                        Video = "fwjtbbe5.yet.mp4"
+                        Video = "test2.mp4",
+                        VideoProcessed = true
                     });   
                     ctx.Add(new Submission
                     {
                         TrickId = "back-flip",
                         Description = "Test description ı have tired to go max height",
-                        Video = "video4.mp4"
+                        Video = "video4.mp4",
+                        VideoProcessed = true
                     });
                     ctx.SaveChanges();
                 }
