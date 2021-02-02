@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace TrickingLibrary.Controllers
 {
     [Route("api/videos")]
+   
     public class VideosController : ControllerBase
     {
         private readonly IWebHostEnvironment _env;
@@ -27,6 +28,7 @@ namespace TrickingLibrary.Controllers
             return new FileStreamResult( new FileStream(savePath, FileMode.Open, FileAccess.Read), "video/*");
         }
         [HttpPost]
+       
         public async Task<IActionResult> UploadVideo(IFormFile video)
         {
            
