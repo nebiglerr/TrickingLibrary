@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TrickingLibrary.Api.Form
+namespace TrickingLibrary.Form
 {
     public class TrickForm 
     {

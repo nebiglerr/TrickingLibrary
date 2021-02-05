@@ -60,7 +60,7 @@
   </v-card>
 </template>
 <script>
-import { mapState, mapGetters, mapActions, mapMutations } from 'vuex'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 
 const initState = () => ({
   step: 1,
@@ -76,15 +76,7 @@ export default {
 
   data: initState,
   computed: {
-    ...mapGetters('tricks', ['tricksItem']),
-    ...mapState('video-upload', ['active'])
-  },
-  watch: {
-    active (newValue) {
-      if (!newValue) {
-        Object.assign(this.$data, initState())
-      }
-    }
+    ...mapGetters('tricks', ['tricksItem'])
   },
   methods: {
     ...mapMutations('video-upload', ['hide']),

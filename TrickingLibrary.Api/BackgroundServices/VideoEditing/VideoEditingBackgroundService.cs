@@ -11,22 +11,24 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using TrickingLibrary.Data;
 
-namespace TrickingLibrary.BackgroundServices
+namespace TrickingLibrary.BackgroundServices.VideoEditing
 {
     public class VideoEditingBackgroundService : BackgroundService
     {
         private readonly IWebHostEnvironment _env;
+        private readonly VideoManager _videoManager;
         private readonly ILogger<VideoEditingBackgroundService> _logger;
         private readonly IServiceProvider _serviceProvider;
         private readonly ChannelReader<EditVideoMessage> _channelReader;
 
         public VideoEditingBackgroundService(IWebHostEnvironment env, Channel<EditVideoMessage> channel,
-            ILogger<VideoEditingBackgroundService> logger, IServiceProvider serviceProvider)
+            ILogger<VideoEditingBackgroundService> logger, IServiceProvider serviceProvider, VideoManager videoManager)
         {
             _env = env;
             _logger = logger;
             _serviceProvider = serviceProvider;
             _channelReader = channel.Reader;
+            _videoManager = videoManager;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -36,30 +38,37 @@ namespace TrickingLibrary.BackgroundServices
                 var message = await _channelReader.ReadAsync(stoppingToken);
                 try
                 {
-                    var inputPath = Path.Combine(_env.WebRootPath, message.InputPath);
-                    var outputName = $"c{DateTime.Now.Ticks}";
-                    var outputPath = Path.Combine(_env.WebRootPath, outputName);
+                    var inputPath = _videoManager.TemporarySavePath(message.InputPath);
+                    var outputName = _videoManager.GenerateConvertedFileName();
+                    var outputPath = _videoManager.TemporarySavePath(outputName);
                     var startInfo = new ProcessStartInfo
                     {
                         FileName = Path.Combine(_env.ContentRootPath, "ffmpeg", "ffmpeg.exe"),
                         Arguments = $"-y -i {inputPath} -an -vf scale=640x480 {outputPath}",
-                        WorkingDirectory = _env.WebRootPath,
+                        WorkingDirectory = _videoManager.WorkingDirectory,
                         CreateNoWindow = true,
                         UseShellExecute = false
                     };
-                    using var process = new Process {StartInfo = startInfo};
-                    process.Start();
-                    process.WaitForExit();
+                    using (var process = new Process {StartInfo = startInfo})
+                    {
+                        process.Start();
+                        process.WaitForExit();
+                    }
+
+                    if (!_videoManager.TemporaryVideoExists(outputName))
+                    {
+                        throw new Exception("FFMPEG failed to generated converted video ");
+                    }
                     using (var scope = _serviceProvider.CreateScope())
                     {
                         var ctx = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-                        
+
                         var submission = ctx.Submissions.FirstOrDefault(x => x.Id.Equals(message.SubmissionId));
-                        
+
                         submission.Video = outputName;
-                        
+
                         submission.VideoProcessed = true;
-                        
+
                         await ctx.SaveChangesAsync(stoppingToken);
                     }
                 }
@@ -68,13 +77,12 @@ namespace TrickingLibrary.BackgroundServices
                     _logger.LogError(e, "Video Processing for {0}", message.InputPath);
                     throw;
                 }
+                finally
+                {
+                    _videoManager.DeleteTemporaryVideo(message.InputPath);
+
+                }
             }
         }
-    }
-
-    public class EditVideoMessage
-    {
-        public int SubmissionId { get; set; }
-        public string InputPath { get; set; }
     }
 }

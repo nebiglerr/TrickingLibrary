@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TrickingLibrary.BackgroundServices;
+using TrickingLibrary.BackgroundServices.VideoEditing;
 using TrickingLibrary.Data;
 
 namespace TrickingLibrary
@@ -26,6 +27,7 @@ namespace TrickingLibrary
             services.AddDbContext<AppDbContext>(optios => optios.UseInMemoryDatabase("Dev"));
             services.AddHostedService<VideoEditingBackgroundService>();
             services.AddSingleton<Channel<EditVideoMessage>>((_) => Channel.CreateUnbounded<EditVideoMessage>());
+            services.AddSingleton<VideoManager>();
             services.AddCors(options =>
                 options.AddPolicy(AllCors,build => build.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod()));
         }
