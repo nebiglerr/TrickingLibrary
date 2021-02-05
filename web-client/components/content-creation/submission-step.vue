@@ -1,7 +1,14 @@
 <template>
   <v-card>
-    <v-stepper v-model="step">
-      <v-stepper-header>
+    <v-card-title>
+      Create Submission
+      <v-spacer />
+      <v-btn icon @click="close">
+        <v-icon> mdi-close</v-icon>
+      </v-btn>
+    </v-card-title>
+    <v-stepper v-model="step" class="rounded-0">
+      <v-stepper-header class="elevation-0">
         <v-stepper-step :complete="step > 1" step="1">
           Upload Video
         </v-stepper-step>
@@ -24,32 +31,34 @@
       </v-stepper-header>
 
       <v-stepper-items>
-        <v-stepper-content step="1">
+        <v-stepper-content step="1" class="pt-0">
           <v-file-input accept="video/*" @change="handleFile($event)" />
         </v-stepper-content>
-        <v-stepper-content step="2">
+        <v-stepper-content step="2" class="pt-0">
           <div>
             <v-select v-model="form.trickId" :items="tricksItem" label="Select Trick" />
 
-            <v-btn @click="step++">
-              Next
-            </v-btn>
-            <div />
+            <div class="d-flex justify-center">
+              <v-btn @click="step++">
+                Next
+              </v-btn>
+            </div>
           </div>
         </v-stepper-content>
 
-        <v-stepper-content step="3">
+        <v-stepper-content step="3" class="pt-0">
           <div>
             <v-text-field v-model="form.description" label="Description" />
-            <v-btn @click="step++">
-              Next
-            </v-btn>
-            <div />
+            <div class="d-flex justify-center">
+              <v-btn @click="step++">
+                Next
+              </v-btn>
+            </div>
           </div>
         </v-stepper-content>
 
         <v-stepper-content step="4">
-          <div>
+          <div class="d-flex justify-center">
             <v-btn @click="save">
               Save
             </v-btn>
@@ -61,20 +70,20 @@
 </template>
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex'
+import { close } from '~/components/content-creation/_shared'
 
-const initState = () => ({
-  step: 1,
-  form: {
-    trickId: '',
-    video: '',
-    description: ''
-  }
-
-})
 export default {
   name: 'SubmissionStep',
+  mixins: [close],
+  data: () => ({
+    step: 1,
+    form: {
+      trickId: '',
+      video: '',
+      description: ''
+    }
 
-  data: initState,
+  }),
   computed: {
     ...mapGetters('tricks', ['tricksItem'])
   },
