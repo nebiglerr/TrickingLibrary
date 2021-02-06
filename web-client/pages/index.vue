@@ -13,7 +13,6 @@
       </div>
       <v-divider class="my-5" />
     </div>
-    <div>{{ $config.api }}</div>
   </div>
 </template>
 

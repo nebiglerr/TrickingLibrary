@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TrickingLibrary.Data;
 using TrickingLibrary.Models;
+using TrickingLibrary.Models.Moderation;
 
 namespace TrickingLibrary
 {
@@ -56,6 +57,20 @@ namespace TrickingLibrary
                     });
                     ctx.Add(new Trick
                     {
+                        Id = "forwards-roll",
+                        Name = "Forwards Roll",
+                        Difficulty = "easy",
+                        Description = "This is a test Forwards roll ",
+                        TrickCategories = new List<TrickCategory>
+                        {
+                            new TrickCategory
+                            {
+                                CategoryId = "flip",
+                            }
+                        }
+                    });
+                    ctx.Add(new Trick
+                    {
                         Id = "backwards-roll",
                         Name = "Backwards Roll",
                         Difficulty = "easy",
@@ -88,6 +103,11 @@ namespace TrickingLibrary
                                 PrerequisiteId = "backwards-roll"
                             }
                         }
+                    });
+                    ctx.Add(new ModerationItem
+                    {
+                        Target = "forwards-roll",
+                        Type = ModerationTypes.Trick,
                     });
                     /*ctx.Add(new Submission
                     {
