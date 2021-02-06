@@ -3,7 +3,7 @@
     <template v-slot:content>
       <div v-if="submissions">
         <v-card v-for="s in submissions" :key="s.id" class="mb-3">
-          <video-player :key="trick.id" :video="s.video" />
+          <video-player :video="s.video" />
           <v-card-text>{{ s.description }}</v-card-text>
         </v-card>
       </div>
@@ -37,8 +37,8 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
-import VideoPlayer from '~/components/video-player'
 import ItemContentLayout from '~/components/item-content-layout'
+import VideoPlayer from '~/components/video-player'
 
 export default {
   component: { ItemContentLayout, VideoPlayer },

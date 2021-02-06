@@ -13,6 +13,7 @@
       </div>
       <v-divider class="my-5" />
     </div>
+    <div>{{ $config.api }}</div>
   </div>
 </template>
 
@@ -23,6 +24,7 @@ export default {
 
   computed: {
     ...mapState('tricks', ['tricks', 'categories', 'difficulties']),
+
     sections () {
       return [
         { collections: this.tricks, title: 'Tricks', routeFactory: id => '/trick/' + id },

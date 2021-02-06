@@ -9,9 +9,10 @@
       ref="video"
       muted
       loop
-      :src="'http://localhost:5000/api/videos/'+video.videoLink"
+      :src="'http://localhost:5000/api/videos/'+ video.videoLink"
       :poster="'http://localhost:5000/api/videos/'+video.thumbLink"
       preload="none"
+      playsinline
     />
   </div>
 </template>
@@ -23,7 +24,7 @@ export default {
   props: {
     video: {
       require: true,
-      type: String
+      type: Object
     }
   },
   data: () => ({

@@ -19,23 +19,26 @@ namespace TrickingLibrary.BackgroundServices.VideoEditing
             _env = env;
         }
 
-        public string WorkingDirectory => _env.WebRootPath;
+        private string WorkingDirectory => _env.WebRootPath;
+        public string FFMPEGPath => Path.Combine(_env.ContentRootPath, "ffmpeg", "ffmpeg.exe");
         public bool Temporary(string fileName)
         {
             return fileName.StartsWith(TempPrefix);
         }
 
-        public bool TemporaryVideoExists(string fileName)
+        public bool TemporaryFileExists(string fileName)
         {
             var path = TemporarySavePath(fileName);
             return File.Exists(path);
         }
 
-        public void DeleteTemporaryVideo(string fileName)
+        public void DeleteTemporaryFile(string fileName)
         {
             var path = TemporarySavePath(fileName);
-            File.Delete(path);
-            
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
         }
 
         public string DevVideoPath(string fileName)
@@ -45,9 +48,10 @@ namespace TrickingLibrary.BackgroundServices.VideoEditing
 
         public string GenerateConvertedFileName() => $"{ConvertedPrefix}{DateTime.Now.Ticks}.mp4";
         public string GenerateThumbnailFileName() => $"{ThumbnailPrefix}{DateTime.Now.Ticks}.png";
+
         public async Task<string> SaveTemporaryVideo(IFormFile video)
         {
-            var fileName = string.Concat(TempPrefix,DateTime.Now.Ticks, Path.GetExtension(video.FileName));
+            var fileName = string.Concat(TempPrefix, DateTime.Now.Ticks, Path.GetExtension(video.FileName));
             var savePath = TemporarySavePath(fileName);
             await using (var fileStream = new FileStream(savePath, FileMode.Create, FileAccess.Write))
             {
