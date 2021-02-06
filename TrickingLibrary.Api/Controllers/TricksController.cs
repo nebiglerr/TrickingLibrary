@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TrickingLibrary.Data;
 using TrickingLibrary.Form;
 using TrickingLibrary.Models;
@@ -35,7 +36,7 @@ namespace TrickingLibrary.Controllers
 
         [HttpGet("{trickId}/submissions")]
         public IEnumerable<Submission> ListSubmissionsForTrick(string trickId) => _ctx.Submissions
-            .Where(x => x.TrickId.Equals(trickId, StringComparison.InvariantCultureIgnoreCase)).ToList();
+            .Include(x => x.Video).Where(x => x.TrickId.Equals(trickId, StringComparison.InvariantCultureIgnoreCase)).ToList();
 
         [HttpPost]
         public async Task<object> Create([FromBody] TrickForm trickForm)

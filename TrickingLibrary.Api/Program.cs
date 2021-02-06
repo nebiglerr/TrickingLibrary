@@ -89,7 +89,7 @@ namespace TrickingLibrary
                             }
                         }
                     });
-                    ctx.Add(new Submission
+                    /*ctx.Add(new Submission
                     {
                         TrickId = "back-flip",
                         Description = "Test description ı have tired to go max height",
@@ -102,7 +102,7 @@ namespace TrickingLibrary
                         Description = "Test description ı have tired to go max height",
                         Video = "video4.mp4",
                         VideoProcessed = true
-                    });
+                    });*/
                     ctx.SaveChanges();
                 }
             }

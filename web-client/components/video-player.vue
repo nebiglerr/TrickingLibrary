@@ -5,7 +5,14 @@
         mdi-play
       </v-icon>
     </div>
-    <video ref="video" muted loop :src="'http://localhost:5000/api/videos/'+video" />
+    <video
+      ref="video"
+      muted
+      loop
+      :src="'http://localhost:5000/api/videos/'+video.videoLink"
+      :poster="'http://localhost:5000/api/videos/'+video.thumbLink"
+      preload="none"
+    />
   </div>
 </template>
 
@@ -38,19 +45,21 @@ export default {
 .video-container {
   position: relative;
   width: 100%;
-display: flex;
-  .play-button{
+  display: flex;
+
+  .play-button {
     display: flex;
     justify-content: center;
     align-content: center;
     border-top-left-radius: inherit;
     border-top-right-radius: inherit;
     position: absolute;
-    background-color: rgb(0,0,0,0.36);
+    background-color: rgb(0, 0, 0, 0.36);
     width: 100%;
     height: 100%;
     z-index: 2;
-    &.hide{
+
+    &.hide {
       opacity: 0;
     }
   }
