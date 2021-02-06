@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TrickingLibrary.Data;
+using TrickingLibrary.Models;
 using TrickingLibrary.Models.Moderation;
 
 namespace TrickingLibrary.Controllers
@@ -18,14 +22,41 @@ namespace TrickingLibrary.Controllers
             _ctx = ctx;
         }
 
-        // /api/tricks
+
         [HttpGet]
         public IEnumerable<ModerationItem> All() => _ctx.ModerationItems.ToList();
 
-        // /api/tricks/{id}
+
         [HttpGet("{id}")]
         public ModerationItem Get(int id) =>
             _ctx.ModerationItems.FirstOrDefault(x => x.Id.Equals(id));
-        
+
+        [HttpGet("{id}/comments")]
+        public IEnumerable<Comment> GetComments(int id) =>
+            _ctx.ModerationItems
+                .Include(x => x.Comments)
+                .Where(x => x.Id.Equals(id))
+                .Select(x => x.Comments)
+                .FirstOrDefault();
+
+        [HttpPost("{id}/comments")]
+        public async Task<IActionResult> Comment(int id, [FromBody] Comment comment)
+        {
+            var modeItem = _ctx.ModerationItems.FirstOrDefault(x => x.Id == id);
+            
+            var regex = new Regex(@"\B(?<tag>@[a-zA-Z0-9-_]+)");
+         
+            comment.HtmlContent = regex.Matches(comment.Content)
+                .Aggregate(comment.Content, (content, match) =>
+            {
+                var tag = match.Groups["tag"].Value;
+                return content.Replace(tag, $"<a href=\"{tag}-user-link\">{tag}</a>");
+            });
+
+
+            modeItem.Comments.Add(comment);
+            await _ctx.SaveChangesAsync();
+            return Ok(comment);
+        }
     }
 }

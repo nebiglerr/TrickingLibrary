@@ -3,7 +3,7 @@
     <v-btn
       v-for="i in items"
       :key="i.id"
-      :to="'/moderation/'+i.type+'/'+i.target"
+      :to="'/moderation/'+i.id+'/'+i.type+'/'+i.target"
     >
       {{ i.target }}
     </v-btn>
