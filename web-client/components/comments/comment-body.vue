@@ -9,11 +9,12 @@
         Load Replies
       </v-btn>
     </div>
-    <comment-input v-if="replying" @send="(c) => $emit('send',c)" @cancel="replying =false" />
+    <comment-input v-if="replying" label="Reply" @send="(c) => $emit('send',c)" @cancel="replying =false" />
   </div>
 </template>
 
 <script>
+import CommentInput from './comment-input'
 export default {
   name: 'CommentBody',
 
@@ -23,6 +24,7 @@ export default {
       type: Object
     }
   },
+  component: { CommentInput },
   data: () => ({
     replying: false
   })

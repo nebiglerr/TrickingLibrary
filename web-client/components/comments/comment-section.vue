@@ -8,9 +8,10 @@
 
 <script>
 import CommentInput from './comment-input'
+import Comment from './comment'
 export default {
   name: 'CommentSection',
-  component: { CommentInput },
+  component: { CommentInput, Comment },
   props: {
     comments: {
       require: true,

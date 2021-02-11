@@ -42,11 +42,12 @@ namespace TrickingLibrary.Controllers
         [HttpPost("{id}/comments")]
         public async Task<IActionResult> Comment(int id, [FromBody] Comment comment)
         {
-            var modeItem = _ctx.ModerationItems.FirstOrDefault(x => x.Id == id);
-            if (modeItem == null)
+          
+            if (!_ctx.ModerationItems.Any(x => x.Id == id))
             {
                 return NoContent();
             }
+
             var regex = new Regex(@"\B(?<tag>@[a-zA-Z0-9-_]+)");
          
             comment.HtmlContent = regex.Matches(comment.Content)
@@ -57,9 +58,30 @@ namespace TrickingLibrary.Controllers
             });
 
 
-            modeItem.Comments.Add(comment);
+             comment.ModerationItemId = id;
+            _ctx.Add(comment);
             await _ctx.SaveChangesAsync();
             return Ok(CommentViewModel.Create(comment));
+        }
+        [HttpGet("{id}/reviews")]
+        public IEnumerable<Review> GetReviews(int id) =>
+            _ctx.Reviews
+                .Where(x => x.ModerationItemId.Equals(id))
+                .ToList();
+
+        [HttpPost("{id}/reviews")]
+        public async Task<IActionResult> Review(int id, [FromBody] Review review)
+        {
+            
+            if (!_ctx.ModerationItems.Any(x => x.Id == id))
+            {
+                return NoContent();
+            }
+
+            review.ModerationItemId = id;
+            _ctx.Add(review);
+            await _ctx.SaveChangesAsync();
+            return Ok(review);
         }
     }
 }
