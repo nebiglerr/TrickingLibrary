@@ -4,6 +4,12 @@
       <v-btn @click="login">
         Login
       </v-btn>
+      <v-btn @click="api('test')">
+        Api
+      </v-btn>
+      <v-btn @click="api('mod')">
+        Mod
+      </v-btn>
     </div>
     <div v-for="s in sections" :key="s.id">
       <div class="d-flex flex-column align-center">
@@ -48,26 +54,36 @@ export default {
         client_id: 'web-client',
         redirect_uri: 'http://localhost:3000',
         response_type: 'code',
-        scope: 'openid profile',
-        // loadUserInfo:true,
+        scope: 'openid profile IdentityServerApi',
+        loadUserInfo: true,
         post_logout_redirect_uri: 'http://localhost:3000',
         // silent_redirect_uri: 'http://localhost:3000/',
         userStore: new WebStorageStateStore({ store: localStorage })
         // store: window.localStorage
       })
-    }
 
-    const { code, scope, state } = this.$route.query
-    if (code && scope && state) {
-      this.usrMgr.signinRedirectCallback().then((user) => {
-        console.log(user)
-        this.$router.push('/')
+      this.usrMgr.getUser().then((user) => {
+        if (user) {
+          this.$axios.setToken('Bearer' + user.access_token)
+        }
       })
+
+      const { code, scope, state } = this.$route.query
+      if (code && scope && state) {
+        this.usrMgr.signinRedirectCallback().then((user) => {
+          console.log(user)
+          this.$axios.setToken('Bearer' + user.access_token)
+          this.$router.push('/')
+        })
+      }
     }
   },
   methods: {
     login () {
       return this.usrMgr.signinRedirect(UserManager)
+    },
+    api (x) {
+      return this.$axios.$get('/api/tricks/' + x).then(msg => console.log(msg))
     }
   }
 

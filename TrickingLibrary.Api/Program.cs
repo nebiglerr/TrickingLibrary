@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -128,6 +129,10 @@ namespace TrickingLibrary
                     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
                     var user = new IdentityUser("test");
                     userManager.CreateAsync(user,"password").GetAwaiter().GetResult();
+                    
+                    var mod = new IdentityUser("mod");
+                    userManager.CreateAsync(mod,"mod1234").GetAwaiter().GetResult();
+                    userManager.AddClaimAsync(mod,new Claim(ClaimTypes.Role,TrickingLibraryConstants.Roles.Mod )).GetAwaiter().GetResult();
                 }
             }
 

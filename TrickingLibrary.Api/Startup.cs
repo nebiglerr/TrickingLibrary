@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Threading.Channels;
 using IdentityServer4;
 using IdentityServer4.Models;
@@ -55,7 +56,7 @@ namespace TrickingLibrary
             app.UseRouting();
             app.UseAuthentication();
             app.UseIdentityServer();
-
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
@@ -97,6 +98,11 @@ namespace TrickingLibrary
                  new IdentityResources.OpenId(),
                  new IdentityResources.Profile()
                 });
+                
+                identityIdentityServer.AddInMemoryApiScopes(new ApiScope[]
+                {
+                    new ApiScope(IdentityServerConstants.LocalApi.ScopeName, new []{ClaimTypes.Role}),
+                });
                 identityIdentityServer.AddInMemoryClients(new Client[]
                 {
                     new Client
@@ -109,7 +115,8 @@ namespace TrickingLibrary
                         AllowedScopes = new []
                         {
                             IdentityServerConstants.StandardScopes.OpenId,
-                            IdentityServerConstants.StandardScopes.Profile
+                            IdentityServerConstants.StandardScopes.Profile,
+                            IdentityServerConstants.LocalApi.ScopeName
                         },
                         RequirePkce = true,
                         AllowAccessTokensViaBrowser = true,
@@ -121,6 +128,30 @@ namespace TrickingLibrary
                 });
                 identityIdentityServer.AddDeveloperSigningCredential();
             }
+
+            services.AddLocalApiAuthentication();
+            services.AddAuthorization(options =>
+            {
+               
+                options.AddPolicy(TrickingLibraryConstants.Policies.Mod ,policy =>
+                {
+                    var is4Policy = options.GetPolicy(IdentityServerConstants.LocalApi.PolicyName);
+                    policy.Combine(is4Policy);
+                    policy.RequireClaim(ClaimTypes.Role,TrickingLibraryConstants.Roles.Mod);
+                });
+            });
+
+        }
+    }
+
+    public struct TrickingLibraryConstants
+    {
+        public struct Policies
+        {
+            public const string Mod = nameof(Mod);
+        } public struct Roles
+        {
+            public const string Mod = nameof(Mod);
         }
     }
 }
