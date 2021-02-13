@@ -30,12 +30,12 @@ namespace TrickingLibrary.Controllers
         
         [HttpGet("test")]
         [Authorize(Policy = IdentityServerConstants.LocalApi.PolicyName)]
-        public string Test() =>"Test";
+        public string Test() =>"test";
 
              
         [HttpGet("mod")]
         [Authorize(Policy = TrickingLibraryConstants.Policies.Mod)]
-        public string Mod() =>"Mod";
+        public string Mod() =>"mod";
         
         [HttpGet("{id}")]
         public object Get(string id) =>

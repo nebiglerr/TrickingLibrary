@@ -54,6 +54,7 @@ namespace TrickingLibrary
            
             app.UseCors(AllCors);
             app.UseRouting();
+            app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseIdentityServer();
             app.UseAuthorization();
@@ -86,6 +87,7 @@ namespace TrickingLibrary
             services.ConfigureApplicationCookie(config =>
             {
                 config.LoginPath = "/Account/Login";
+                config.LogoutPath = "/api/auth/logout";
             });
             var identityIdentityServer= services.AddIdentityServer();
             
@@ -96,12 +98,13 @@ namespace TrickingLibrary
                 identityIdentityServer.AddInMemoryIdentityResources(new IdentityResource[]
                 {
                  new IdentityResources.OpenId(),
-                 new IdentityResources.Profile()
+                 new IdentityResources.Profile(),
+                 new IdentityResource(TrickingLibraryConstants.IdentityResource.RoleScope,new []{TrickingLibraryConstants.Claims.Role})
                 });
                 
                 identityIdentityServer.AddInMemoryApiScopes(new ApiScope[]
                 {
-                    new ApiScope(IdentityServerConstants.LocalApi.ScopeName, new []{ClaimTypes.Role}),
+                    new ApiScope(IdentityServerConstants.LocalApi.ScopeName, new []{TrickingLibraryConstants.Claims.Role}),
                 });
                 identityIdentityServer.AddInMemoryClients(new Client[]
                 {
@@ -109,14 +112,15 @@ namespace TrickingLibrary
                     {
                         ClientId = "web-client",
                         AllowedGrantTypes = GrantTypes.Code,
-                        RedirectUris = new[] {"http://localhost:3000"},
-                        PostLogoutRedirectUris = new[] {"http://localhost:3000"},
-                        AllowedCorsOrigins = new[] {"http://localhost:3000"},
+                        RedirectUris = new[] {"https://localhost:3000/oidc/sign-in-callback.html"},
+                        PostLogoutRedirectUris = new[] {"https://localhost:3000"},
+                        AllowedCorsOrigins = new[] {"https://localhost:3000"},
                         AllowedScopes = new []
                         {
                             IdentityServerConstants.StandardScopes.OpenId,
                             IdentityServerConstants.StandardScopes.Profile,
-                            IdentityServerConstants.LocalApi.ScopeName
+                            IdentityServerConstants.LocalApi.ScopeName,
+                            TrickingLibraryConstants.IdentityResource.RoleScope
                         },
                         RequirePkce = true,
                         AllowAccessTokensViaBrowser = true,
@@ -137,7 +141,7 @@ namespace TrickingLibrary
                 {
                     var is4Policy = options.GetPolicy(IdentityServerConstants.LocalApi.PolicyName);
                     policy.Combine(is4Policy);
-                    policy.RequireClaim(ClaimTypes.Role,TrickingLibraryConstants.Roles.Mod);
+                    policy.RequireClaim(TrickingLibraryConstants.Claims.Role,TrickingLibraryConstants.Roles.Mod);
                 });
             });
 
@@ -149,7 +153,16 @@ namespace TrickingLibrary
         public struct Policies
         {
             public const string Mod = nameof(Mod);
-        } public struct Roles
+        } 
+        public struct Claims
+        {
+            public const string Role = "role";
+        }  
+        public struct IdentityResource
+        {
+            public const string RoleScope = "role";
+        }
+        public struct Roles
         {
             public const string Mod = nameof(Mod);
         }

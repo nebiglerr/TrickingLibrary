@@ -4,6 +4,9 @@
       <v-btn @click="login">
         Login
       </v-btn>
+      <v-btn @click="logout">
+        Logout
+      </v-btn>
       <v-btn @click="api('test')">
         Api
       </v-btn>
@@ -50,37 +53,29 @@ export default {
   created () {
     if (!process.server) {
       this.usrMgr = new UserManager({
-        authority: 'http://localhost:5000',
+        authority: 'https://localhost:5001',
         client_id: 'web-client',
-        redirect_uri: 'http://localhost:3000',
+        redirect_uri: 'https://localhost:3000/oidc/sign-in-callback.html',
         response_type: 'code',
-        scope: 'openid profile IdentityServerApi',
-        loadUserInfo: true,
-        post_logout_redirect_uri: 'http://localhost:3000',
-        // silent_redirect_uri: 'http://localhost:3000/',
+        scope: 'openid profile IdentityServerApi role',
+        post_logout_redirect_uri: 'https://localhost:3000',
+        // silent_redirect_uri: 'https://localhost:3000',
         userStore: new WebStorageStateStore({ store: localStorage })
         // store: window.localStorage
       })
-
       this.usrMgr.getUser().then((user) => {
         if (user) {
           this.$axios.setToken('Bearer' + user.access_token)
         }
       })
-
-      const { code, scope, state } = this.$route.query
-      if (code && scope && state) {
-        this.usrMgr.signinRedirectCallback().then((user) => {
-          console.log(user)
-          this.$axios.setToken('Bearer' + user.access_token)
-          this.$router.push('/')
-        })
-      }
     }
   },
   methods: {
     login () {
-      return this.usrMgr.signinRedirect(UserManager)
+      return this.usrMgr.signinRedirect()
+    },
+    logout () {
+      return this.usrMgr.signoutRedirect()
     },
     api (x) {
       return this.$axios.$get('/api/tricks/' + x).then(msg => console.log(msg))

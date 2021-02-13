@@ -132,7 +132,10 @@ namespace TrickingLibrary
                     
                     var mod = new IdentityUser("mod");
                     userManager.CreateAsync(mod,"mod1234").GetAwaiter().GetResult();
-                    userManager.AddClaimAsync(mod,new Claim(ClaimTypes.Role,TrickingLibraryConstants.Roles.Mod )).GetAwaiter().GetResult();
+                    userManager
+                        .AddClaimAsync(mod,new Claim(TrickingLibraryConstants.Claims.Role,
+                            TrickingLibraryConstants.Roles.Mod ))
+                        .GetAwaiter().GetResult();
                 }
             }
 
