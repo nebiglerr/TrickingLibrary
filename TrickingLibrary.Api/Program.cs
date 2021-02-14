@@ -127,10 +127,10 @@ namespace TrickingLibrary
                     });*/
                     ctx.SaveChanges();
                     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
-                    var user = new IdentityUser("test");
-                    userManager.CreateAsync(user,"password").GetAwaiter().GetResult();
+                    var user = new IdentityUser("test@test.com");
+                    userManager.CreateAsync(user,"pas1234").GetAwaiter().GetResult();
                     
-                    var mod = new IdentityUser("mod");
+                    var mod = new IdentityUser("mod@mod.com");
                     userManager.CreateAsync(mod,"mod1234").GetAwaiter().GetResult();
                     userManager
                         .AddClaimAsync(mod,new Claim(TrickingLibraryConstants.Claims.Role,
